@@ -45,7 +45,7 @@ def extract_interest(lines, interest_amount=0):
         if "Interest" in line and "£" in line:
             amount = "".join(x for x in line.split("£")[1] if x not in [" ", ","])
             interest_amount += float(amount)
-    return interest_amount
+    return round(interest_amount, 2)
 
 
 def read_statement(filepath):
