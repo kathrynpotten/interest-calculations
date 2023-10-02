@@ -1,7 +1,7 @@
-from SavingsInterest import import_statements
-from SavingsInterest import read_statements
-from SavingsInterest import calculations
-from SavingsInterest import summary_email
+from savingsinterest import import_statements
+from savingsinterest import read_statements
+from savingsinterest import calculations
+from savingsinterest import summary_email
 import getpass
 
 
