@@ -1,4 +1,5 @@
 # Hide statements
 
 /statements/*
+/savingsinterest/__pycache__
 
