@@ -34,7 +34,7 @@ def remaining_tax_free(tax_band, interest_amount):
     elif tax_band == "40":
         remaining_tax_free = 500 - interest_amount
 
-    return remaining_tax_free
+    return round(remaining_tax_free, 2)
 
 
 def create_message(
@@ -46,7 +46,11 @@ def create_message(
     projected_simple=0,
     projected_compound=0,
 ):
-    if tax_year == datetime.now().strftime("%Y"):
+    tax_months_next = ["January", "February", "March"]
+    if tax_year == datetime.now().strftime("%Y") or (
+        str(int(tax_year) + 1) == datetime.now().strftime("%Y")
+        and datetime.now().strftime("%B") in tax_months_next
+    ):
         remaining = remaining_tax_free(tax_band, interest_amount)
         if balance:
             balance_repr = "\n"
@@ -54,10 +58,10 @@ def create_message(
                 balance_repr += f"\n{account}   {value}"
             rates_repr = "\n"
             for account, value in interest_rates.items():
-                rates_repr += f"\n{account}   {value}"
+                rates_repr += f"\n{account}   {value}%"
             today = datetime.today().strftime("%Y-%m-%d")
             projected_year = round(projected_compound + interest_amount, 2)
-            summary_message = f"""Your total interest for the current tax year at {today} is {interest_amount}.\nYou have {remaining} of tax-free interest remaining.\nYour current balance is: {balance_repr}, 
+            summary_message = f"""Your total interest for the current tax year at {today} is {round(interest_amount, 2)}.\nYou have {remaining} of tax-free interest remaining.\nYour current balance is: {balance_repr}, 
             \nwith interest rates: {rates_repr}.\n\nProjected interest for rest of tax-year with current balance and interest rates is {projected_simple} (simple), or {projected_compound} (compounded), giving total interest for tax-year of {projected_year}."""
             if remaining_tax_free(tax_band, projected_year) < 0:
                 summary_message += (
@@ -67,11 +71,9 @@ def create_message(
             last_month = (
                 datetime.today() + dateutil.relativedelta.relativedelta(months=-1)
             ).strftime("%B")
-            summary_message = f"""Your total interest for the current tax year at end of {last_month} is {interest_amount}.\nYou have {remaining} of tax-free interest remaining."""
+            summary_message = f"""Your total interest for the current tax year at end of {last_month} is {round(interest_amount, 2)}.\nYou have {remaining} of tax-free interest remaining."""
     else:
-        summary_message = (
-            f"""Your total interest for tax year {tax_year} was {interest_amount}."""
-        )
+        summary_message = f"""Your total interest for tax year {tax_year} was {round(interest_amount, 2)}."""
 
     return summary_message
 

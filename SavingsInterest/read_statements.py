@@ -98,19 +98,19 @@ def read_files_and_extract(tax_year):
         for file in files:
             if in_tax_year(file, tax_year):
                 filepath = filedir + "/" + file
-                if tax_year == datetime.now().strftime("%Y"):
-                    if datetime.now().strftime("%B") in file:
-                        (
-                            balance,
-                            interest_rates,
-                            amount,
-                        ) = read_statement_current(filepath)
-                        send2trash.send2trash("statements/" + file)
-                        print(f"Partial statement {file} has been deleted")
-                    else:
-                        amount = read_statement(filepath)
+                # if tax_year == datetime.now().strftime("%Y"):
+                if datetime.now().strftime("%B") in file:
+                    (
+                        balance,
+                        interest_rates,
+                        amount,
+                    ) = read_statement_current(filepath)
+                    send2trash.send2trash("statements/" + file)
+                    print(f"Partial statement {file} has been deleted")
                 else:
                     amount = read_statement(filepath)
+                # else:
+                #    amount = read_statement(filepath)
                 interest_amount += amount
 
     return balance, interest_rates, interest_amount

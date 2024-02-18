@@ -35,6 +35,7 @@ def import_statements_from_email(user, password):
                         .split("Subject: ", 1)[1]
                         .split("\nMIME", 1)[0]
                     )
+                    # subject no longer correct - fix this
                     print(f'Downloaded "{filename}" from email titled "{subject}".')
 
     M.logout()
